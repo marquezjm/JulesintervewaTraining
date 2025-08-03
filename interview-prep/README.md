@@ -73,6 +73,23 @@ Se centra en las funcionalidades principales del framework Spring Boot.
     -   **`ResponseEntity`:** Permite un control total sobre la respuesta HTTP (códigos de estado, etc.).
     -   **Inyección de Dependencias:** Se muestra cómo `@Autowired` (o mejor, la inyección por constructor) desacopla los componentes.
 
+## Ejecutando con Docker (Opcional)
+
+Si tienes Docker instalado, puedes construir y ejecutar la aplicación en un contenedor. Esto asegura que se ejecute en un entorno consistente.
+
+1.  **Construye la imagen de Docker:**
+    Desde la raíz del proyecto, ejecuta:
+    ```bash
+    docker build -t interview-prep .
+    ```
+
+2.  **Ejecuta el contenedor:**
+    Una vez construida la imagen, ejecútala con:
+    ```bash
+    docker run -p 8080:8080 interview-prep
+    ```
+    La aplicación estará disponible en `http://localhost:8080` en tu máquina local.
+
 ## ¡Buena Suerte en tu Entrevista!
 
 Usa este proyecto para experimentar. Modifica el código, añade nuevos ejercicios o intenta resolver los problemas de una manera diferente. ¡El objetivo es aprender y ganar confianza!
