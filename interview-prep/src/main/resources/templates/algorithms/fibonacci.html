@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Ejercicio de Secuencia de Fibonacci</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body class="container mt-5">
+
+    <header class="mb-4">
+        <h1>Ejercicio: Secuencia de Fibonacci</h1>
+        <p class="lead">
+            Este ejercicio compara dos enfoques para calcular la secuencia de Fibonacci: recursivo e iterativo.
+            Es un problema clásico para discutir la eficiencia de algoritmos (complejidad temporal y espacial).
+        </p>
+    </header>
+
+    <div class="card">
+        <div class="card-header">
+            Calcula el n-ésimo número de Fibonacci
+        </div>
+        <div class="card-body">
+            <form th:action="@{/algorithms/fibonacci/calculate}" method="post">
+                <div class="mb-3">
+                    <label for="number" class="form-label">Introduce un número (n):</label>
+                    <input type="number" id="number" name="number" class="form-control" min="0" max="40" value="10" required>
+                    <div class="form-text">Para la demostración, se recomienda un número <= 40 para evitar largos tiempos de espera en la versión recursiva.</div>
+                </div>
+                <button type="submit" class="btn btn-primary">Calcular</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Sección de resultados -->
+    <div th:if="${n != null}" class="mt-4">
+        <h3>Resultados para n = <span th:text="${n}"></span></h3>
+        <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+        <div th:unless="${error}" class="row">
+            <!-- Resultado Iterativo -->
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Solución Iterativa (Eficiente)</h5>
+                        <p class="card-text">Resultado: <strong th:text="${resultIterative}"></strong></p>
+                        <p class="card-text">Tiempo de ejecución: <span th:text="${timeIterative}"></span> nanosegundos.</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Resultado Recursivo -->
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Solución Recursiva (Ineficiente)</h5>
+                        <p class="card-text">Resultado: <strong th:text="${resultRecursive}"></strong></p>
+                        <p class="card-text">Tiempo de ejecución: <span th:text="${timeRecursive}"></span> nanosegundos.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-5">
+        <h3>Conceptos Clave en este Ejercicio:</h3>
+        <ul>
+            <li><strong>Recursividad vs. Iteración:</strong> Se comparan dos soluciones para el mismo problema, destacando las diferencias en rendimiento.</li>
+            <li><strong>Complejidad Algorítmica:</strong> La solución recursiva tiene una complejidad de O(2^n), mientras que la iterativa es O(n). Esto es un punto de discusión muy común en entrevistas.</li>
+            <li><strong>StackOverflowError:</strong> La recursividad profunda puede llevar a este error, algo que la iteración evita.</li>
+        </ul>
+        <a href="/" class="btn btn-secondary mt-3">Volver al inicio</a>
+    </div>
+
+</body>
+</html>

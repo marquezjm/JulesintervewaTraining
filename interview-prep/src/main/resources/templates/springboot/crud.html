@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Conceptos Clave de Spring Boot: API RESTful</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        code {
+            background-color: #f8f9fa;
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.25rem;
+        }
+        pre {
+            background-color: #343a40;
+            color: #f8f9fa;
+            padding: 1rem;
+            border-radius: 0.25rem;
+        }
+    </style>
+</head>
+<body class="container mt-5">
+
+    <header class="mb-4">
+        <h1>Conceptos Clave de Spring Boot: API RESTful (CRUD)</h1>
+        <p class="lead">
+            Este ejercicio demuestra cómo construir una API RESTful completa con Spring Boot.
+            A diferencia de los controladores anteriores que devuelven vistas HTML (<code>@Controller</code>),
+            este usa <code>@RestController</code> para devolver datos en formato JSON.
+        </p>
+    </header>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            ¿Qué es un <code>@RestController</code>?
+        </div>
+        <div class="card-body">
+            <p>
+                Es una anotación de conveniencia que combina <code>@Controller</code> y <code>@ResponseBody</code>.
+                Esto le dice a Spring que todos los métodos en esta clase devolverán datos que se escribirán
+                directamente en el cuerpo de la respuesta, en lugar de resolver una vista. Spring Boot, por defecto,
+                usará la librería Jackson para convertir los objetos Java a JSON.
+            </p>
+        </div>
+    </div>
+
+    <h2>Endpoints de la API de Usuarios</h2>
+    <p>Puedes probar estos endpoints usando herramientas como <strong>Postman</strong>, <strong>Insomnia</strong>, o directamente con <code>curl</code> desde tu terminal.</p>
+
+    <!-- GET All -->
+    <div class="card mb-3">
+        <div class="card-header"><strong>GET</strong> /api/users</div>
+        <div class="card-body">
+            <p>Obtiene la lista de todos los usuarios.</p>
+            <pre><code>curl -X GET http://localhost:8080/api/users</code></pre>
+        </div>
+    </div>
+
+    <!-- GET by ID -->
+    <div class="card mb-3">
+        <div class="card-header"><strong>GET</strong> /api/users/{id}</div>
+        <div class="card-body">
+            <p>Obtiene un usuario específico por su ID.</p>
+            <pre><code>curl -X GET http://localhost:8080/api/users/1</code></pre>
+        </div>
+    </div>
+
+    <!-- POST -->
+    <div class="card mb-3">
+        <div class="card-header"><strong>POST</strong> /api/users</div>
+        <div class="card-body">
+            <p>Crea un nuevo usuario. El cuerpo de la solicitud debe contener el JSON del nuevo usuario.</p>
+            <pre><code>curl -X POST http://localhost:8080/api/users \
+-H "Content-Type: application/json" \
+-d '{"name": "Charlie", "email": "charlie@example.com"}'</code></pre>
+        </div>
+    </div>
+
+    <!-- PUT -->
+    <div class="card mb-3">
+        <div class="card-header"><strong>PUT</strong> /api/users/{id}</div>
+        <div class="card-body">
+            <p>Actualiza un usuario existente.</p>
+            <pre><code>curl -X PUT http://localhost:8080/api/users/1 \
+-H "Content-Type: application/json" \
+-d '{"name": "Alice Smith", "email": "alice.smith@example.com"}'</code></pre>
+        </div>
+    </div>
+
+    <!-- DELETE -->
+    <div class="card mb-3">
+        <div class="card-header"><strong>DELETE</strong> /api/users/{id}</div>
+        <div class="card-body">
+            <p>Elimina un usuario.</p>
+            <pre><code>curl -X DELETE http://localhost:8080/api/users/2</code></pre>
+        </div>
+    </div>
+
+    <div class="mt-5">
+        <a href="/" class="btn btn-secondary mt-3">Volver al inicio</a>
+    </div>
+
+</body>
+</html>
