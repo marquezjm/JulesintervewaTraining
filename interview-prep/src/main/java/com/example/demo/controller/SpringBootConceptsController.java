@@ -12,4 +12,9 @@ public class SpringBootConceptsController {
     public String showCrudApiPage() {
         return "springboot/crud";
     }
+
+    @GetMapping("/ratelimiter")
+    public String showRateLimiterPage() {
+        return "springboot/ratelimiter";
+    }
 }

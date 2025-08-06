@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Conceptos Clave: Limitador de Tasa (Rate Limiter)</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        code {
+            background-color: #f8f9fa;
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.25rem;
+        }
+        pre {
+            background-color: #343a40;
+            color: #f8f9fa;
+            padding: 1rem;
+            border-radius: 0.25rem;
+        }
+    </style>
+</head>
+<body class="container mt-5">
+
+    <header class="mb-4">
+        <h1>Conceptos Clave: Limitador de Tasa (Rate Limiter)</h1>
+        <p class="lead">
+            Este ejercicio demuestra cómo implementar un limitador de tasa de peticiones usando un <code>HandlerInterceptor</code> en Spring Boot.
+            Es una técnica fundamental para proteger tus APIs contra abusos y asegurar su disponibilidad.
+        </p>
+    </header>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            ¿Qué es un <code>HandlerInterceptor</code>?
+        </div>
+        <div class="card-body">
+            <p>
+                Es una interfaz de Spring MVC que te permite "interceptar" las peticiones HTTP antes de que lleguen al controlador (<code>preHandle</code>),
+                después de que el controlador haya terminado pero antes de renderizar la vista (<code>postHandle</code>), y después de que la petición se haya completado
+                (<code>afterCompletion</code>).
+            </p>
+            <p>
+                Es ideal para implementar funcionalidades transversales como logging, autenticación, o como en este caso, rate limiting.
+            </p>
+        </div>
+    </div>
+
+    <h2>Probando el Rate Limiter</h2>
+    <p>
+        Hemos configurado un interceptor para limitar el acceso al endpoint <code>/api/limited/resource</code> a <strong>10 peticiones cada 60 segundos</strong> por IP.
+    </p>
+    <p>Puedes probarlo ejecutando el siguiente comando en tu terminal repetidamente:</p>
+    <pre><code>curl -i http://localhost:8080/api/limited/resource</code></pre>
+
+    <h4>Comportamiento Esperado:</h4>
+    <ul>
+        <li>Las primeras 10 veces (dentro de 60 segundos), recibirás una respuesta <code>200 OK</code> con un mensaje JSON.</li>
+        <li>A partir de la petición número 11, recibirás una respuesta <code>429 Too Many Requests</code> con un mensaje de error.</li>
+        <li>Si esperas a que pasen 60 segundos desde la primera petición, el contador se reiniciará.</li>
+    </ul>
+
+    <div class="mt-5">
+        <a href="/" class="btn btn-secondary mt-3">Volver al inicio</a>
+    </div>
+
+</body>
+</html>

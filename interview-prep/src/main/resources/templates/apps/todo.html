@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Aplicación de Lista de Tareas (To-Do)</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        .completed {
+            text-decoration: line-through;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body class="container mt-5">
+
+    <header class="mb-4">
+        <h1>Aplicación: Lista de Tareas (To-Do)</h1>
+        <p class="lead">
+            Un ejemplo práctico de una aplicación CRUD completa usando Spring Boot para el backend
+            y JavaScript para consumir la API REST en el frontend.
+        </p>
+    </header>
+
+    <div class="card">
+        <div class="card-header">
+            Añadir Nueva Tarea
+        </div>
+        <div class.card-body p-3>
+            <form id="new-todo-form">
+                <div class="input-group">
+                    <input type="text" id="new-todo-task" class="form-control" placeholder="¿Qué necesitas hacer?" required>
+                    <button type="submit" class="btn btn-primary">Añadir</button>
+                </div>
+            </form>
+        </div>
+        <ul id="todo-list" class="list-group list-group-flush">
+            <!-- Las tareas se insertarán aquí con JavaScript -->
+        </ul>
+    </div>
+
+    <div class="mt-5">
+        <h3>Conceptos Clave en esta Aplicación:</h3>
+        <ul>
+            <li><strong>Backend (Spring Boot):</strong>
+                <ul>
+                    <li>API RESTful con <code>@RestController</code> para operaciones CRUD.</li>
+                    <li>Uso de DTOs (<code>TodoDTO</code>) para la transferencia de datos.</li>
+                    <li>Validación de datos de entrada con <code>@Valid</code> y <code>@NotBlank</code>.</li>
+                    <li>Servicio (<code>TodoService</code>) para la lógica de negocio.</li>
+                </ul>
+            </li>
+            <li><strong>Frontend (JavaScript):</strong>
+                <ul>
+                    <li>Consumo de una API REST usando la función <code>fetch</code>.</li>
+                    <li>Manipulación dinámica del DOM para añadir, actualizar y eliminar elementos sin recargar la página.</li>
+                    <li>Manejo de eventos para la interacción del usuario.</li>
+                </ul>
+            </li>
+        </ul>
+        <a href="/" class="btn btn-secondary mt-3">Volver al inicio</a>
+    </div>
+
+    <script>
+        const todoList = document.getElementById('todo-list');
+        const newTodoForm = document.getElementById('new-todo-form');
+        const newTaskInput = document.getElementById('new-todo-task');
+
+        const API_URL = '/api/todos';
+
+        // --- Funciones de la API ---
+
+        async function fetchTodos() {
+            const response = await fetch(API_URL);
+            const todos = await response.json();
+            renderTodos(todos);
+        }
+
+        async function addTodo(task) {
+            const response = await fetch(API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ task: task, completed: false })
+            });
+            if (response.ok) {
+                fetchTodos(); // Recargar la lista
+                newTaskInput.value = ''; // Limpiar el input
+            } else {
+                alert('Error al añadir la tarea. Asegúrate de que no esté vacía.');
+            }
+        }
+
+        async function updateTodoStatus(id, completed) {
+            await fetch(`${API_URL}/${id}`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ completed: completed })
+            });
+            fetchTodos();
+        }
+
+        async function deleteTodo(id) {
+            if (confirm('¿Estás seguro de que quieres eliminar esta tarea?')) {
+                await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
+                fetchTodos();
+            }
+        }
+
+        // --- Renderizado ---
+
+        function renderTodos(todos) {
+            todoList.innerHTML = ''; // Limpiar la lista actual
+            todos.sort((a, b) => a.id - b.id).forEach(todo => {
+                const li = document.createElement('li');
+                li.className = 'list-group-item d-flex justify-content-between align-items-center';
+
+                const taskSpan = document.createElement('span');
+                taskSpan.textContent = todo.task;
+                if (todo.completed) {
+                    taskSpan.classList.add('completed');
+                }
+
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.className = 'form-check-input me-2';
+                checkbox.checked = todo.completed;
+                checkbox.addEventListener('change', () => updateTodoStatus(todo.id, checkbox.checked));
+
+                const deleteButton = document.createElement('button');
+                deleteButton.className = 'btn btn-danger btn-sm';
+                deleteButton.textContent = 'Eliminar';
+                deleteButton.addEventListener('click', () => deleteTodo(todo.id));
+
+                const leftDiv = document.createElement('div');
+                leftDiv.appendChild(checkbox);
+                leftDiv.appendChild(taskSpan);
+
+                li.appendChild(leftDiv);
+                li.appendChild(deleteButton);
+
+                todoList.appendChild(li);
+            });
+        }
+
+        // --- Event Listeners ---
+
+        newTodoForm.addEventListener('submit', event => {
+            event.preventDefault();
+            const task = newTaskInput.value.trim();
+            if (task) {
+                addTodo(task);
+            }
+        });
+
+        // Carga inicial
+        document.addEventListener('DOMContentLoaded', fetchTodos);
+    </script>
+
+</body>
+</html>

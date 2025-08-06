@@ -93,3 +93,11 @@ Si tienes Docker instalado, puedes construir y ejecutar la aplicación en un con
 ## ¡Buena Suerte en tu Entrevista!
 
 Usa este proyecto para experimentar. Modifica el código, añade nuevos ejercicios o intenta resolver los problemas de una manera diferente. ¡El objetivo es aprender y ganar confianza!
+
+### 5. Ejercicios Prácticos de Entrevista
+
+Esta sección contiene mini-aplicaciones que simulan problemas comunes en entrevistas de trabajo.
+
+-   **Aplicación de Lista de Tareas (To-Do):** Un CRUD completo que demuestra la separación de incumbencias con DTOs, validación de entrada, y una API REST consumida por un frontend de JavaScript simple.
+-   **Acortador de URLs:** Un ejercicio clásico de diseño de sistemas que implica redirecciones HTTP y generación de códigos únicos.
+-   **Limitador de Tasa (Rate Limiter):** Demuestra cómo usar Interceptores de Spring (`HandlerInterceptor`) para proteger una API contra el abuso, una técnica esencial para la robustez de un sistema.
