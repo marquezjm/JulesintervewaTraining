@@ -38,20 +38,20 @@ public class UrlShortenerController {
     /**
      * Endpoint de redirección.
      * @param shortCode El código corto extraído de la URL.
-     * @return Un RedirectView que le dice al navegador que vaya a la URL original,
-     *         o una vista de error si el código no se encuentra.
+     * @return Una cadena de redirección si el código es válido, o el nombre de la vista de error si no lo es.
      */
     @GetMapping("/{shortCode}")
-    public Object redirectToOriginalUrl(@PathVariable String shortCode, Model model) {
+    public String redirectToOriginalUrl(@PathVariable String shortCode, Model model) {
         return urlShortenerService.getOriginalUrl(shortCode)
-            .map(url -> {
-                // Añadimos "http://" si no está presente para asegurar una redirección válida.
-                String finalUrl = url.startsWith("http://") || url.startsWith("https://") ? url : "http://" + url;
-                return new RedirectView(finalUrl);
-            })
-            .orElseGet(() -> {
-                model.addAttribute("error", "La URL acortada no existe.");
-                return "apps/shortener"; // Muestra la página principal con un mensaje de error.
-            });
+                .map(url -> {
+                    // Añadimos "http://" si no está presente para asegurar una redirección válida.
+                    String finalUrl = url.startsWith("http://") || url.startsWith("https://") ? url : "http://" + url;
+                    // El prefijo "redirect:" le indica a Spring MVC que realice una redirección.
+                    return "redirect:" + finalUrl;
+                })
+                .orElseGet(() -> {
+                    model.addAttribute("error", "La URL acortada '" + shortCode + "' no existe o no es válida.");
+                    return "apps/shortener"; // Muestra la página principal con un mensaje de error.
+                });
     }
 }
